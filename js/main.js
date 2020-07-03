@@ -89,16 +89,15 @@ function update(data){
         xAxisGroup.transition(t).call(xAxis);
 
    //Adds rectangle bars
-    const rects = g.selectAll('circle')
+    const rects = g.selectAll('rect')
         .data(data, key => key.month);
 
         //Remove old elements that are not present in new data
         rects.exit()
             .attr("fill","red")
             .transition(t)
-            .attr("cy",yScale(0))
-        //    .attr("height",0)
-            .attr("r",5)
+            .attr("y",yScale(0))
+            .attr("height",0)
             .remove()
         
         /* REPLAVED BY MERGE
@@ -111,22 +110,20 @@ function update(data){
         */
 
         rects.enter()
-            .append('circle')
+            .append('rect')
             .attr('fill','gray')
-        //    .attr("height",0)
-            .attr("r",0)
+            .attr("height",0)
             .attr('width', xScale.bandwidth())
-            .attr('cx', d => xScale(d.month) + xScale.bandwidth()/2)
-            .attr('cy', yScale(0))
+            .attr('x', d => xScale(d.month))
+            .attr('y', yScale(0))
             .attr('fill-opacity',0)
             .merge(rects)
             .transition(t)
                 .attr('class','bar')
-                .attr('cx', d => xScale(d.month)+ xScale.bandwidth()/2)
+                .attr('x', d => xScale(d.month))
                 .attr('width', xScale.bandwidth())
-                .attr('cy',d => yScale(d[value]))
-            //    .attr('height', d => innerHeight - yScale(d[value]))
-                .attr("r",5)
+                .attr('y',d => yScale(d[value]))
+                .attr('height', d => innerHeight - yScale(d[value]))
                 .attr('fill-opacity',1);
 
 
